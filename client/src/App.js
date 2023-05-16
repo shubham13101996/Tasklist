@@ -89,7 +89,7 @@ const App = () => {
                     element={<ProfileMain />}
                   ></Route>
                   <Route exact path="/signup" element={<SignUp />}></Route>
-                  <Route exact path="/login" element={<Login />}></Route>
+                  {/* <Route exact path="/login" element={<Login />}></Route> */}
                 </Routes>
               </div>
             </UserState>

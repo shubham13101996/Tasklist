@@ -94,13 +94,13 @@ const SignUp = () => {
         </form>
       </div>
 
-      <div className="flex gap-3 text-[18px] mt-10">
+      {/* <div className="flex gap-3 text-[18px] mt-10">
         <h4 className="font-bold">Already have an account?</h4>
         <Link className="text-[#fd77a1]" to={"/login"}>
           Login
         </Link>{" "}
         here
-      </div>
+      </div> */}
     </div>
   );
 };
