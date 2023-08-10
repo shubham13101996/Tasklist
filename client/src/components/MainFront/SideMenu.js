@@ -2,19 +2,42 @@ import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import TaskContext from "../../context/Task/TaskContext";
 import TodoContext from "../../context/Todo/TodoContext";
+import { useDrop } from "react-dnd";
 
 const SideMenu = () => {
   const taskContext = useContext(TaskContext);
-  const { tasks } = taskContext;
+  const { tasks, setTasks } = taskContext;
   const todoContext = useContext(TodoContext);
-  const { todos, getTodos } = todoContext;
+  const { todos, getTodos, setTodos } = todoContext;
 
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "task",
+    drop: (item) => addItemToTodo(item.id),
+    collect: (monitor) => ({
+      isOver: !!monitor.isOver(),
+    }),
+  }));
   const navigate = useNavigate();
 
   const handleClickOnTodo = (todo_id, title) => {
     navigate(`/${todo_id}/${title}`);
   };
   // console.log(todos)
+  // for add task into another list
+  const addItemToTodo = (id) => {
+    console.log("dropped", id);
+    setTodos((prev) => {
+      const mTask = prev.map((t) => {
+        if (t.id === id) {
+          return { ...t };
+        }
+        // t = [...tasks];
+        return t;
+      });
+      console.log(mTask);
+      return mTask;
+    });
+  };
 
   useEffect(() => {
     getTodos();
@@ -27,7 +50,9 @@ const SideMenu = () => {
       <h1 className="text-[#bbbabf] font-bold text-[1.4rem] ml-8 mt-8">
         TODOs
       </h1>
-      <div className="text-[#c9c9cb] text-[1.2rem] font-[600]  my-6 h-[80vh] overflow-y-scroll">
+      <div
+        className={`text-[#c9c9cb] text-[1.2rem] font-[600]   my-6 h-[80vh] overflow-y-scroll`}
+      >
         {!todos ? (
           <h4 className="text-center mt-20 text-gray-500">
             No <span className="text-pink-600">TODOs</span> yet
@@ -36,9 +61,12 @@ const SideMenu = () => {
           todos.map((element) => {
             return (
               <div
+                ref={drop}
                 key={element._id}
                 onClick={() => handleClickOnTodo(element._id, element.title)}
-                className="hover:bg-[#262632] px-8  py-4 flex justify-between"
+                className={`hover:bg-[#262632] px-8  ${
+                  isOver ? " bg-slate-700" : ""
+                }  py-4 flex justify-between `}
               >
                 <div className="flex gap-5">
                   <div

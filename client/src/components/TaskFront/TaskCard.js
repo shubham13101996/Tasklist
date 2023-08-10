@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import SpinnerContext from "../../context/Spinner/SpinnerContext";
 import TaskContext from "../../context/Task/TaskContext";
+import { useDrag } from "react-dnd";
 
 const TaskCard = ({ task, setShowEditTaskModal, setTaskIdforEdit }) => {
   const taskContext = useContext(TaskContext);
@@ -9,6 +10,15 @@ const TaskCard = ({ task, setShowEditTaskModal, setTaskIdforEdit }) => {
   const todoId = useParams();
   const spinnerContext = useContext(SpinnerContext);
   const { isLoading, setIsLoading } = spinnerContext;
+
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "task",
+    item: { id: todoId.todoId },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+  console.log(isDragging);
 
   const handleDelete = () => {
     setIsLoading(true);
@@ -36,7 +46,12 @@ const TaskCard = ({ task, setShowEditTaskModal, setTaskIdforEdit }) => {
   };
   // console.log("first")
   return (
-    <div className="  bg-[#21202a] px-4 py-3 rounded-2xl group">
+    <div
+      ref={drag}
+      className={` bg-[#21202a] px-4 py-3 ${
+        isDragging ? "opacity-25" : "opacity-100"
+      } rounded-2xl group`}
+    >
       <div className="flex justify-between">
         <div className="flex gap-3 w-full">
           <button onClick={handleCheck}>

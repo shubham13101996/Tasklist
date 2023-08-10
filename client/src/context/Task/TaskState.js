@@ -87,7 +87,7 @@ const TaskState = (props) => {
 
   return (
     <TodoContext.Provider
-      value={{ getTasks, tasks, addTask, checkTask, editTask, deleteTask }}
+      value={{ getTasks,setTasks, tasks, addTask, checkTask, editTask, deleteTask }}
     >
       {props.children}
     </TodoContext.Provider>

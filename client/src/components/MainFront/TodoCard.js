@@ -16,6 +16,10 @@ const TodoCard = ({ todo, setShowEditTodoModal, todoToEdit }) => {
   const { setTasks } = taskContext;
   const { deleteTodo } = todoContext;
 
+
+
+
+
   const handleClickOnTodo = () => {
     navigate(`/${todo._id}/${todo.title}`);
   };
